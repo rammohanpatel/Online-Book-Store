@@ -1,53 +1,39 @@
-export default function IndexPage({ pets }) {
+import {client} from '../lib/client'
+import HeroBanner from '../Components/HeroBanner';
+import Product from '../Components/Product';
+// import FooterBanner from '../Components/FooterBanner';
+
+
+function Home({products,bannerData}) {
+
   return (
     <>
-      <header>
-        <h1>Sanity + Next.js</h1>
-      </header>
-      <main>
-        <h2>Pets</h2>
-        {pets.length > 0 && (
-          <ul>
-            {pets.map((pet) => (
-              <li key={pet._id}>{pet?.name}</li>
-            ))}
-          </ul>
-        )}
-        {!pets.length > 0 && <p>No pets to show</p>}
-        {pets.length > 0 && (
-          <div>
-            <pre>{JSON.stringify(pets, null, 2)}</pre>
-          </div>
-        )}
-        {!pets.length > 0 && (
-          <div>
-            <div>¯\_(ツ)_/¯</div>
-            <p>
-              Your data will show up here when you've configured everything
-              correctly
-            </p>
-          </div>
-        )}
-      </main>
+    <HeroBanner heroBanner={bannerData.length && bannerData[0]}/>
+    <div className='products-heading'>
+      <h2>Best Selling Books</h2>
+      <p>We have different genres of books</p>
+    </div>
+    <div className="products-container">
+      {products?.map((product) => <Product key={product._id} product={product} />)}
+    </div>
+    {/* <FooterBanner footerBanner={bannerData && bannerData[0]} /> */}
     </>
-  );
+  )
 }
 
-export async function getStaticProps() {
-  const pets = [
-    /* {
-      _createdAt: "2022-03-08T09:28:00Z",
-      _id: "1f69c53d-418a-452f-849a-e92466bb9c75",
-      _rev: "xnBg0xhUDzo561jnWODd5e",
-      _type: "pet",
-      _updatedAt: "2022-03-08T09:28:00Z",
-      name: "Bamse"
-    } */
-  ];
 
-  return {
+
+export async function getServerSideProps() {
+  const products = await client.fetch(`*[_type == "product"]`);
+
+  const bannerData = await client.fetch(`*[_type == "banner"]`);
+
+ return {
     props: {
-      pets
+      products,
+      bannerData,
     }
   };
 }
+
+export default Home;
