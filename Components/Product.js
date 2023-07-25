@@ -3,7 +3,7 @@ import Link from 'next/link'
 import {urlFor} from '../lib/client'
 import { useStateContext } from '../context/StateContext'
 
-const Product = ({product:{image,name,slug,price}}) => {
+const Product = ({product:{image,name,slug,price,category}}) => {
   const {setQty}=useStateContext();
   return (
     <div>
