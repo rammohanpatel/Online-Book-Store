@@ -7,7 +7,7 @@ import Product from '../Components/Product';
 
 function Home({products,bannerData}) {
   // const categories = [...new Set(products.map((product) => product.category))];
-  const categories = ['self-help','biography','fiction']
+  const categories = ['self-help','biography','fiction','adventure','health and fitness','history','sports']
 
 
   return (
